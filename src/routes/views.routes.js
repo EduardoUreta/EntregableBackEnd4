@@ -1,6 +1,8 @@
 import { Router } from "express";
-import { productsService, cartsService } from "../mongo/index.js";
-import { cartsModel } from "../mongo/models/carts.models.js";
+// import { cartsDao, productsService } from "../dao/index.js";
+import { cartsModel } from "../dao/models/carts.models.js"
+import { CartsService } from "../service/carts.service.js";
+import { ProductsService } from "../service/products.service.js";
 
 export const viewsRouter = Router();
 
@@ -24,7 +26,7 @@ viewsRouter.get("/", async (req, res) => {
     sort === "stock_desc" ? { stock: -1 } :
     { price: -1 }; 
 
-    const result = await productsService.getProductsPaginate(query, options);
+    const result = await ProductsService.getProductsPaginate(query, options);
     const baseUrl = req.protocol + "://" + req.get("host") + req.originalUrl;
     const dataProducts = {
         status:"success",
@@ -51,7 +53,7 @@ viewsRouter.get("/", async (req, res) => {
 
 viewsRouter.get("/cart", async (req, res) => {
     const cartId = await cartsModel.findOne().sort({ carts: -1 });
-    const cart = await cartsService.getCartById(cartId,{lean:true});
+    const cart = await CartsService.getCartById(cartId,{lean:true});
     const productsCart = cart.products;
     res.render("cart", { products: productsCart})
 });

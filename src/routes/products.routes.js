@@ -1,30 +1,13 @@
 import { Router } from "express";
-import { productsService } from "../mongo/index.js";
+import { ProductsController } from "../controller/products.controller.js";
 
 export const productsRouter = Router();
 
-productsRouter.get("/", async (req, res) => {
-    
-    const result = await productsService.getProducts()
-    res.json({message: "Lista de productos", data: result});
-});
+// Obtener Productos
+productsRouter.get("/", ProductsController.getProducts);
 
-productsRouter.post("/", async (req, res)=>{
-    try {
-        const productInfo = req.body;
-        const result = await productsService.createProduct(productInfo);
-        res.json({status:"success", result});
-    } catch (error) {
-        res.json({status:"error", message:error.message});
-    }
-});
+// Crear Productos
+productsRouter.post("/", ProductsController.createProduct);
 
-productsRouter.get("/:pid", async(req,res)=>{
-    try {
-        const productId = parseInt(req.params.pid);
-        const product = await productsService.getProductById(productId);
-        res.json({message:"endpoint para obtener un producto", data:product});
-    } catch (error) {
-        res.json({status:"error",message:error.message});
-    }
-});
+// Obtener Producto por ID
+productsRouter.get("/:pid", ProductsController.getProductById);

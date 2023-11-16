@@ -1,4 +1,4 @@
-let currentCartId = null;
+let currentCartId = '6555911a344f255577eb106f';
 
 const createCart = async () => {
     const newCartResponse = await fetch('http://localhost:8080/api/carts/', {
@@ -25,3 +25,24 @@ const addToCart = async (productId) => {
     return currentCartId;
 };
 
+const deleteToCart = async (productId) => {
+    if (currentCartId && productId) {
+        try {
+            const response = await fetch(`http://localhost:8080/api/carts/${currentCartId}/product/${productId}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                console.log('Producto eliminado del carrito correctamente.');
+                window.location.reload(); 
+            } else {
+                console.error('Error al eliminar el producto del carrito.');
+            }
+    
+        } catch (error) {
+            console.error('Error de red o servidor al eliminar el producto del carrito:', error);
+        }
+    } else {
+        console.error('No se proporcionó un ID de carrito o ID de producto válido.');
+    }
+};

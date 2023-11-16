@@ -3,7 +3,6 @@ import localStrategy from "passport-local";
 
 // Se creará el hash y la clave se guardará con HASH, más seguro
 import { createHash, inValidPassword } from "../utils.js";
-import { usersService } from "../mongo/index.js";
 
 import { config } from "./config.js";
 import GithubStrategy from "passport-github2"
