@@ -7,6 +7,8 @@ import { createHash, inValidPassword } from "../utils.js";
 import { config } from "./config.js";
 import GithubStrategy from "passport-github2"
 
+import { usersService } from "../dao/index.js";
+
 export const initializePassport = () => {
     // Estrategia para registrar usuarios nuevos
     passport.use("signupLocalStrategy", new localStrategy(

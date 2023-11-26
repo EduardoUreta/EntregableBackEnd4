@@ -23,3 +23,6 @@ cartsRouter.delete("/:cid", CartsController.deleteCart);
 
 // Actualizar Cantidad de Productos en el Carrito
 cartsRouter.put("/:cid/product/:pid", CartsController.addProductInCart);
+
+// Crear Ticket
+cartsRouter.post("/:cid/purchase", CartsController.purchaseCart);

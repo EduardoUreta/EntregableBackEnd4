@@ -1,4 +1,4 @@
-let currentCartId = '6555911a344f255577eb106f';
+let currentCartId = '656223b7806303ad5534b5fd';
 
 const createCart = async () => {
     const newCartResponse = await fetch('http://localhost:8080/api/carts/', {

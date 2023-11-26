@@ -1,19 +1,17 @@
 import { Router } from "express";
 import passport from "passport";
 import { config } from "../config/config.js";
+import { SessionsController } from "../controller/sessions.controller.js";
 
 export const sessionsRouter = Router();
 
 // Rutas Registros
 sessionsRouter.post("/signup", passport.authenticate("signupLocalStrategy",{
     failureRedirect:"/api/sessions/fail-signup"
-}) , async(req,res)=>{
-    res.render("loginView",{message:"Usuario registrado correctamente"});
-});
+}) , SessionsController.redirectLogin);
 
-sessionsRouter.get("/fail-signup",(req,res)=>{
-    res.render("signupView", {error:"No se pudo registrar el usuario"});
-});
+// Ruta Registro Fail
+sessionsRouter.get("/fail-signup", SessionsController.failSignup);
 
 // Ruta Solicitud Registro GitHub
 sessionsRouter.get("/signup-github", passport.authenticate("signupGithubStrategy"));
@@ -21,20 +19,15 @@ sessionsRouter.get("/signup-github", passport.authenticate("signupGithubStrategy
 // Ruta Callback Github
 sessionsRouter.get(config.github.callbackUrl, passport.authenticate("signupGithubStrategy", {
     failureRedirect: "/api/sessions/fail-signup"
-}), (req, res) => {
-    res.redirect("/profile")
-});
+}), SessionsController.redirectProfile);
 
 // Rutas Login
 sessionsRouter.post("/login", passport.authenticate("loginLocalStrategy",{
     failureRedirect:"/api/sessions/fail-login"
-}) , async(req,res)=>{
-    res.redirect("/profile");
-});
+}) , SessionsController.redirectProfile);
 
-sessionsRouter.get("/fail-login",(req,res)=>{
-    res.render("loginView",{error:"No se pudo iniciar sesion para este usuario"});
-});
+// Ruta Login Fail
+sessionsRouter.get("/fail-login", SessionsController.failLogin);
 
 // Ruta Logout
 sessionsRouter.get("/logout", async(req,res)=>{

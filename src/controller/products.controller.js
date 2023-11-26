@@ -12,7 +12,7 @@ export class ProductsController{
     static createProduct = async (req, res)=>{
         try {
             const productInfo = req.body;
-            const result = await ProductsService.createProduct(productInfo);
+            const result = await ProductsService.createProducts(productInfo);
             res.json({status:"success", result});
         } catch (error) {
             res.json({status:"error", message:error.message});
@@ -28,6 +28,19 @@ export class ProductsController{
         } catch (error) {
             res.json({status:"error",message:error.message});
         }
-    }
+    };
+
+    // Modificar stock de Producto
+    static updatedProduct = async (req, res) => {
+        try {
+            const productId = parseInt(req.params.pid);
+            const newStock = req.body;
+            const result = await ProductsService.updatedProduct(productId, newStock);
+
+            res.json({status:"success", result});            
+        } catch (error) {
+            res.json({status:"error",message:error.message});
+        };
+    };
     
 };

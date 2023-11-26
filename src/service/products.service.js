@@ -8,8 +8,8 @@ export class ProductsService{
     };
 
     // Crear Productos
-    static createProducts(){
-        return productsDao.createProduct();
+    static createProducts(productInfo){
+        return productsDao.createProduct(productInfo);
     };
 
     // Obtener Producto Por ID
@@ -18,7 +18,12 @@ export class ProductsService{
     };
 
     // Obtener Productos con Paginate
-    static getProductsPaginate(){
-        return productsDao.getProductsPaginate();
+    static getProductsPaginate(query, options){
+        return productsDao.getProductsPaginate(query, options);
+    };
+
+    // Modificar stock de un producto
+    static updatedProduct(productId, newStock){
+        return productsDao.updateProductStock(productId, newStock);
     };
 }

@@ -38,9 +38,17 @@ export class ProductsManagerMongo{
         }
     };
 
-    async getProductById(productId){};
+    async updateProductStock(productId, newStock){
+        try {
+            const updatedProduct = await this.model.findByIdAndUpdate(productId, { stock: newStock }, { new: true });
+            return updatedProduct;
+        } catch (error) {
+            console.error("updatedProduct: ", error.message);
+            throw new Error("Se produjo un error al actualizar el stock"); 
+        }
+    };
 
-    async updateProduct(productId, newProductInfo){};
+    async getProductById(productId){};
 
     async deleteProduct(productId){};
 }

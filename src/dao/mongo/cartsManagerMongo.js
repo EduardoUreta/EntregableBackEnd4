@@ -66,7 +66,9 @@
                     quantity: 1
                 });
                 
-                const result = await this.model.findByIdAndUpdate(cartId, cart, {new:true});
+                const result = await this.model.findByIdAndUpdate(cartId, cart, {new:true})
+                    .populate({
+                        path: "products.productId", select: 'title'});
                 return result;
             } catch (error) {
                 console.log(error.message);
@@ -78,21 +80,21 @@
         async deleteProduct(cartId, productId){
             try {
                 const cart = await this.getCartById(cartId);
-                const productExist = cart.products.find(item => item.productId._id == productId);
-                if(productExist){
-                    //si el producto existe en el carrito
-                    const newProducts = cart.products.filter(item => item.productId._id != productId);
-                    cart.products = newProducts;
-                    const result = await this.model.findByIdAndUpdate(cartId, cart, {new:true});
+                const productIndex = cart.products.findIndex(item => item.productId._id.toString() === productId.toString());
+        
+                if(productIndex !== -1){
+                    cart.products.splice(productIndex, 1);
+                    const result = await this.model.findByIdAndUpdate(cartId, cart, { new: true })
+                        .populate({ path: "products.productId", select: 'title' });
                     return result;
                 } else {
-                    throw new Error("El producto no se puede eliminar porque no ha sido agregado");
+                    throw new Error("El producto no se puede eliminar del carrito, porque no ha sido agregado");
                 }
             } catch (error) {
                 console.log("deleteProduct", error.message);
                 throw new Error("No se pudo eliminar el producto del carrito");
             }
-        };
+        };        
 
         // Actualizar Cantidad de Productos en el Carrito
         async updateProductCart(cartId, productId, newQuantity){
@@ -112,4 +114,5 @@
                 throw new Error("No se pudo actualizar el producto al carrito");
             }
         };
+        
     }
