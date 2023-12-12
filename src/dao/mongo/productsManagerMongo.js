@@ -38,6 +38,7 @@ export class ProductsManagerMongo{
         }
     };
 
+    // Actualizar Stock de Producto
     async updateProductStock(productId, newStock){
         try {
             const updatedProduct = await this.model.findByIdAndUpdate(productId, { stock: newStock }, { new: true });
