@@ -3,6 +3,7 @@ import { Router } from "express";
 import { cartsModel } from "../dao/models/carts.models.js"
 import { CartsService } from "../service/carts.service.js";
 import { ProductsService } from "../service/products.service.js";
+import {logger} from "../helpers/logger.js"
 
 export const viewsRouter = Router();
 
@@ -76,5 +77,12 @@ viewsRouter.get("/profile", (req, res) => {
     } else {
         res.redirect("/login");
     };
+});
+
+viewsRouter.get("/testLogger", (req, res) => {
+    logger.error("Log de Error");
+    logger.advertencia("Log de Advertencia");
+    logger.debbug("Log de Debbug");
+    res.send("Prueba Logger");
 });
 

@@ -1,5 +1,8 @@
 // Importar Capa de Servicio
 import { ProductsService } from "../service/products.service.js";
+import { EError } from "../enums/EError.js";
+import { CustomError } from "../service/errors/customError.service.js";
+import { productCreateError } from "../service/errors/productCreateError.service.js";
 
 export class ProductsController{
     // Obtener Productos
@@ -9,13 +12,14 @@ export class ProductsController{
     };
 
     // Crear Productos
-    static createProduct = async (req, res)=>{
+    static createProduct = async (req, res, next)=>{
         try {
             const productInfo = req.body;
             const result = await ProductsService.createProducts(productInfo);
             res.json({status:"success", result});
         } catch (error) {
-            res.json({status:"error", message:error.message});
+            // res.json({status:"error", message:error.message, cause: error.cause});
+            next(error);
         };
     };
 

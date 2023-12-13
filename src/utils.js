@@ -1,7 +1,7 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import bcrypt, {genSaltSync} from 'bcrypt';
+import bcrypt from 'bcrypt';
 
 export const __dirname = path.dirname(fileURLToPath(import.meta.url));
 

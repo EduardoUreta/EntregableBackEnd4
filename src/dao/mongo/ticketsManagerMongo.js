@@ -1,4 +1,5 @@
-import { ticketsModel } from '../models/tickets.model.js'
+import { ticketsModel } from '../models/tickets.model.js';
+import { logger } from '../../helpers/logger.js';
 
 export class TicketsManagerMongo{
     constructor(){
@@ -11,7 +12,7 @@ export class TicketsManagerMongo{
             const result = await this.model.find().lean();
             return result;
         } catch (error) {
-            console.log("getTickets: ", error.message);
+            logger.error("getTickets: ", error.message);
             throw new Error("Se produjo un error al obtener los tickets");
         }
     };
@@ -23,7 +24,7 @@ export class TicketsManagerMongo{
             // El lean() cambia de BSON a JSON
             return result;
         } catch (error) {
-            console.log("getTicketById: ", error.message);
+            logger.error("getTicketById: ", error.message);
             throw new Error("Se produjo un error obteniendo el ticket por ID");
         }
     };
@@ -34,7 +35,7 @@ export class TicketsManagerMongo{
             const result = await this.model.create(ticketInfo);
             return result;
         } catch (error) {
-            console.log("createTicket: ", error.message);
+            logger.error("createTicket: ", error.message);
             throw new Error("Se produjo un error al crear el ticket");
         }
     };

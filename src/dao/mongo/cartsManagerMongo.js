@@ -1,4 +1,5 @@
     import { cartsModel } from "../models/carts.models.js";
+    import { logger } from "../../helpers/logger.js";
 
     export class CartsManagerMongo{
         constructor(){
@@ -11,7 +12,7 @@
                 const result = await this.model.find().lean().populate("products.productId");
                 return result;
             } catch (error) {
-                console.log("getCarts: ", error.message);
+                logger.error("getCarts: ", error.message);
                 throw new Error("Se produjo un error al obtener los carritos");
             }
         };
@@ -25,7 +26,7 @@
                 };
                 return result;
             } catch (error) {
-                console.log(error.message);
+                logger.error(error.message);
                 throw new Error("No se pudo obtener el carrito");
             }
         };
@@ -37,7 +38,7 @@
                 const result = await this.model.create(newCart);
                 return result;
             } catch (error) {
-                console.log(error.message);
+                logger.error(error.message);
                 throw new Error("No se pudo crear el carrito");
             }
         };
@@ -48,7 +49,7 @@
                 const result = await this.model.findByIdAndDelete(cartId);
                 return result;
             } catch (error) {
-                console.log(error.message);
+                logger.error(error.message);
                 throw new Error("No se pudo eliminar el carrito");
             }
         };
@@ -71,7 +72,7 @@
                         path: "products.productId", select: 'title'});
                 return result;
             } catch (error) {
-                console.log(error.message);
+                logger.error(error.message);
                 throw new Error("No se pudo agregar el producto al carrito");
             }
         };
@@ -91,7 +92,7 @@
                     throw new Error("El producto no se puede eliminar del carrito, porque no ha sido agregado");
                 }
             } catch (error) {
-                console.log("deleteProduct", error.message);
+                logger.error("deleteProduct", error.message);
                 throw new Error("No se pudo eliminar el producto del carrito");
             }
         };        
@@ -110,7 +111,7 @@
                     throw new Error("El producto no se puede actualizar porque no ha sido agregado");
                 }
             } catch (error) {
-                console.log("updateProductCart", error.message);
+                logger.error("updateProductCart", error.message);
                 throw new Error("No se pudo actualizar el producto al carrito");
             }
         };

@@ -3,6 +3,10 @@ import session from "express-session"; //Gestionar sesiones de usuarios
 import MongoStore from "connect-mongo"; // Guardar las sesiones, actualizarlas y eliminarlas de la BD
 import cookieParser from "cookie-parser";
 
+import passport from "passport";
+import { config } from "./config/config.js";
+import { initializePassport } from "./config/passport.config.js";
+
 import { __dirname } from "./utils.js"
 import path from "path";
 
@@ -15,9 +19,10 @@ import { cartsRouter } from "./routes/carts.routes.js";
 import { viewsRouter } from "./routes/views.routes.js";
 import { sessionsRouter } from "./routes/sessions.routes.js";
 
-import passport from "passport";
-import { config } from "./config/config.js";
-import { initializePassport } from "./config/passport.config.js";
+// Manejo de Errores + en las rutas
+import { errorHandler } from "./middleware/errorHandler.js"
+
+import { logger } from "./helpers/logger.js";
 
 const port = 8080;
 const app = express();
@@ -36,7 +41,7 @@ app.use('/js', express.static('node_modules/bootstrap/dist/js'));
 app.use(cookieParser("claveSecreta"));
 
 const httpServer = app.listen(port, () => {
-    console.log(`Servidor ejecutandose en el puerto ${port}`);
+    logger.informativo(`Servidor ejecutandose en el puerto ${port}`);
 });
 
 // Servidor de WebSocket
@@ -78,4 +83,5 @@ app.use(viewsRouter);
 app.use("/api/products",productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/sessions", sessionsRouter);
+app.use(errorHandler)
 

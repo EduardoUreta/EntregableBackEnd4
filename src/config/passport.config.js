@@ -9,6 +9,8 @@ import GithubStrategy from "passport-github2"
 
 import { usersService } from "../dao/index.js";
 
+import { logger } from "../helpers/logger.js";
+
 export const initializePassport = () => {
     // Estrategia para registrar usuarios nuevos
     passport.use("signupLocalStrategy", new localStrategy(
@@ -32,7 +34,7 @@ export const initializePassport = () => {
                         email: username, 
                         password: createHash(password)
                     };
-                    console.log(newUser);
+                    logger.informativo(newUser);
                     const userCreated = await usersService.createUser(newUser)
                             // El done (hubo errores?, nuevo user)
                     return done(null, userCreated)
@@ -85,7 +87,7 @@ export const initializePassport = () => {
                         email: profile.username, 
                         password: createHash(profile.id) // Cualquier dato, por cumplir
                     };
-                    console.log(newUser);
+                    logger.informativo(newUser);
                     const userCreated = await usersModel.create(newUser);
                             // El done (hubo errores?, nuevo user)
                     return done(null, userCreated)
