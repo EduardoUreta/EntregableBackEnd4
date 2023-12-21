@@ -15,6 +15,8 @@ export class ProductsController{
     static createProduct = async (req, res, next)=>{
         try {
             const productInfo = req.body;
+            // Agregar owner con el ID a cada nuevo producto creado
+            productInfo.owner = req.user._id;
             const result = await ProductsService.createProducts(productInfo);
             res.json({status:"success", result});
         } catch (error) {
@@ -26,7 +28,7 @@ export class ProductsController{
     // Obtener Producto por ID
     static getProductById = async(req,res)=>{
         try {
-            const productId = parseInt(req.params.pid);
+            const productId = req.params.pid;
             const product = await ProductsService.getProductById(productId);
             res.json({message:"endpoint para obtener un producto", data:product});
         } catch (error) {
@@ -45,6 +47,22 @@ export class ProductsController{
         } catch (error) {
             res.json({status:"error",message:error.message});
         };
+    };
+
+    // Eliminar Producto por ID
+    static deleteProduct = async(req,res)=>{
+        try {
+            const productId = req.params.pid;
+            const product = await ProductsService.getProductById(productId);
+            if((req.user.role === "premium" && product.owner.toString() === req.user._id.toString()) || req.user.role === "admin"){
+                await ProductsService.deleteProduct(productId);
+                res.json({status:"success",message:"producto eliminado"});
+            } else {
+                res.json({status:"error",message:"No tienes permisos para eliminar este producto"});
+            }
+        } catch (error) {
+            res.json({status:"error",message:error.message});
+        }
     };
     
 };

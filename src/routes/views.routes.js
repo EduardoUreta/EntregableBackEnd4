@@ -86,3 +86,11 @@ viewsRouter.get("/testLogger", (req, res) => {
     res.send("Prueba Logger");
 });
 
+viewsRouter.get("/forgot-password", (req, res) => {
+    res.render("forgotPassView")
+});
+
+viewsRouter.get("/reset-password", (req, res) => {
+    const token = req.query.token;
+    res.render("resetPassView", {token});
+});

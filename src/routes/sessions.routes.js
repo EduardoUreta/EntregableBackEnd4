@@ -40,3 +40,8 @@ sessionsRouter.get("/logout", async(req,res)=>{
         res.render("signupView",{error:"No se pudo registrar el usuario"});
     }
 });
+
+// Ruta Reestablecer Contraseña
+sessionsRouter.post("/forgot-password", SessionsController.forgotPassword);
+
+sessionsRouter.post("/reset-password", SessionsController.resetPassword);

@@ -42,9 +42,14 @@ export class CartsController{
     static addProductInCart = async (req, res) => {
         try {
             const {cid:cartId, pid:productId} = req.params;
-            const cart = await CartsService.getCartById(cartId);   
-            const result = await CartsService.addProductInCart(cartId, productId);
-            res.json({status:"success", result});
+            const cart = await CartsService.getCartById(cartId); 
+            const product = await ProductsService.getProductById(productId);
+            if((req.user.role === "premium" && product.owner.toString() === req.user._id.toString())){
+                res.json({status:"error",message:"No puedes agregar TUS productos a un carrito"});
+            } else {
+                const result = await CartsService.addProductInCart(cartId, productId);
+                res.json({status:"success", result});
+            }  
         } catch (error) {
             res.json({error:error.message});
         }

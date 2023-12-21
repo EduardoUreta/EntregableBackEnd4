@@ -1,5 +1,5 @@
 import { usersModel } from "../models/users.models.js";
-import { logger } from "../../helpers/logger.js";
+import logger from "winston";
 
 export class UsersManagerMongo{
     constructor(){
@@ -29,7 +29,7 @@ export class UsersManagerMongo{
 
     async getUserByEmail(userEmail){
         try {
-            const result = await this.model.findOne({email: userEmail});
+            const result = await this.model.findOne({email: userEmail}).lean();
             return result;
         } catch (error) {
             logger.error("getUserByEmail: ", error.message);
@@ -40,4 +40,14 @@ export class UsersManagerMongo{
     async updateProduct(productId, newProductInfo){};
 
     async deleteProduct(productId){};
+
+    async updateUser(id, user){
+        try {
+            const result = await this.model.findByIdAndUpdate(id, user, {new:true});
+            return result;
+        } catch (error) {
+            logger.error("updateUser:", error.message);
+            throw new Error("Se produjo un error al actualizar el usuario");
+        }
+    }
 }

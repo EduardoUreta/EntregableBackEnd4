@@ -13,8 +13,8 @@ export class ProductsService{
     };
 
     // Obtener Producto Por ID
-    static getProductById(){
-        return productsDao.getProductById();
+    static getProductById(productId){
+        return productsDao.getProductById(productId);
     };
 
     // Obtener Productos con Paginate
@@ -25,5 +25,10 @@ export class ProductsService{
     // Modificar stock de un producto
     static updatedProduct(productId, newStock){
         return productsDao.updateProductStock(productId, newStock);
+    };
+
+    // Eliminar Producto por ID
+    static deleteProduct = (productId)=>{
+        return productsDao.deleteProduct(productId);
     };
 }

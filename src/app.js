@@ -18,6 +18,7 @@ import { productsRouter } from "./routes/products.routes.js";
 import { cartsRouter } from "./routes/carts.routes.js";
 import { viewsRouter } from "./routes/views.routes.js";
 import { sessionsRouter } from "./routes/sessions.routes.js";
+import { usersRouter } from "./routes/users.routes.js";
 
 // Manejo de Errores + en las rutas
 import { errorHandler } from "./middleware/errorHandler.js"
@@ -83,5 +84,6 @@ app.use(viewsRouter);
 app.use("/api/products",productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/sessions", sessionsRouter);
+app.use("/api/users/", usersRouter);
 app.use(errorHandler)
 

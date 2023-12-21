@@ -8,5 +8,5 @@ import { TicketsManagerMongo } from "./mongo/ticketsManagerMongo.js";
 export const cartsDao = new CartsManagerMongo();
 export const productsDao = new ProductsManagerMongo();
 export const ticketsDao = new TicketsManagerMongo()
-export const usersService = new UsersManagerMongo();
+export const usersDao = new UsersManagerMongo();
 

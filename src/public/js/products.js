@@ -21,7 +21,7 @@ const addToCart = async (productId) => {
         method: 'POST',
     });
 
-    console.log('Producto agregado al carrito con ID:', currentCartId);
+    console.log(`Producto ${productId} agregado al carrito con ID:`, currentCartId);
     return currentCartId;
 };
 

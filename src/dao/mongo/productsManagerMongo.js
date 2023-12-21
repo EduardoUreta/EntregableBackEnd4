@@ -59,7 +59,23 @@ export class ProductsManagerMongo{
         }
     };
 
-    async getProductById(productId){};
+    async getProductById(productId){
+        try {
+            const result = await this.model.findById(productId).lean();
+            return result;
+        } catch (error) {
+            logger.error("getProductById: ", error.message);
+            throw new Error("Se produjo un error al obtener el producto"); 
+        }
+    };
 
-    async deleteProduct(productId){};
+    async deleteProduct(productId){
+        try {
+            const result = await this.model.findByIdAndDelete(productId);
+            return result;
+        } catch (error) {
+            console.log("deletProduct: ", error.message);
+            throw new Error("Se produjo un error al eliminar el producto");
+        }
+    };
 }

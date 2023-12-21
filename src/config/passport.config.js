@@ -7,7 +7,7 @@ import { createHash, inValidPassword } from "../utils.js";
 import { config } from "./config.js";
 import GithubStrategy from "passport-github2"
 
-import { usersService } from "../dao/index.js";
+import { usersDao } from "../dao/index.js";
 
 import { logger } from "../helpers/logger.js";
 
@@ -22,7 +22,7 @@ export const initializePassport = () => {
             const {first_name, last_name, age} = req.body;
             try {
                 // Buscar el email
-                const user = await usersService.getUserByEmail(username); 
+                const user = await usersDao.getUserByEmail(username); 
                 if(user){
                     // Usuario ya registrado
                     return done(null, false)
@@ -35,7 +35,7 @@ export const initializePassport = () => {
                         password: createHash(password)
                     };
                     logger.informativo(newUser);
-                    const userCreated = await usersService.createUser(newUser)
+                    const userCreated = await usersDao.createUser(newUser)
                             // El done (hubo errores?, nuevo user)
                     return done(null, userCreated)
                 }
@@ -52,7 +52,7 @@ export const initializePassport = () => {
         },
         async (username, password, done) => {
             try {
-                const user = await usersService.getUserByEmail(username)
+                const user = await usersDao.getUserByEmail(username)
                 if(!user){
                     // El usuario no está registrado
                     return done(null, false)
@@ -106,7 +106,7 @@ export const initializePassport = () => {
         //  El SV recibe a cookie, obtiene su valor, extrae la ID del usuario
         // Busca la ID en la BD, y queda guardado en req.user
     passport.deserializeUser(async (id, done) => {
-        const user = await usersService.getUserById(id);
+        const user = await usersDao.getUserById(id);
         done(null, user); //req.user = info del usuario que traemos de BD
     });
 }

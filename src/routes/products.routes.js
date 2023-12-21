@@ -9,9 +9,12 @@ export const productsRouter = Router();
 productsRouter.get("/", ProductsController.getProducts);
 
 // Crear Productos
-productsRouter.post("/", isAuth, checkRole(["admin"]),ProductsController.createProduct);
+productsRouter.post("/", isAuth, checkRole(["admin","premium"]),ProductsController.createProduct);
 
 // Obtener Producto por ID
 productsRouter.get("/:pid", ProductsController.getProductById);
+
+// Eliminar Producto por ID
+productsRouter.delete("/:pid", checkRole(["admin","premium"]), ProductsController.deleteProduct);
 
 
