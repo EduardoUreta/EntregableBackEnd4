@@ -1,0 +1,188 @@
+# Definir los endpoints
+paths:
+  /api/products:
+    get:
+      summary: Obtener todos los Productos
+      tags:
+        - Get Products
+      responses:
+        "200":
+          description: Los productos se obtuvieron correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Products"
+        "500":
+          description: Problema en el servidor
+    post:
+      summary: Crear un Producto
+      tags:
+        - Create Product
+      requestBody:
+        required: true
+        content: 
+          application/json:
+            schema:
+              $ref: "#components/requestBodies/createUpdateProduct"
+      responses:
+        "200":
+          description: El producto se creó correctamente
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#components/schemas/Products"
+        "500":
+          description: Problema en el servidor    
+
+  /api/products/{pid}:
+    get:
+      summary: Obtener la información de un producto
+      tags:
+        - Get Product
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: El ID de producto a consultar
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: Se obtuvo correctamente un producto
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Products"
+        "500":
+          description: Problema en el servidor    
+    put:
+      summary: Actualizar un producto
+      tags:
+        - Update Product
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: El ID de producto a actualizar
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: Se actualizó correctamente un producto
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Products"
+        "500":
+          description: Problema en el servidor  
+    delete:
+      summary: Eliminar un producto
+      tags:
+        - Delete Product
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: El ID de producto a eliminar
+          schema:
+            $type: string
+      responses:
+        "200":
+          description: Se eliminó correctamente un producto
+          content:
+            application/json:
+              schema:
+                $ref: "#components/schemas/Products"
+        "500":
+          description: Problema en el servidor   
+     
+# Componentes
+  # Se utiliza para más detalles
+    # Ej: como se estrutura un body, o el objeto de un producto
+
+components:
+  schemas:
+    Products:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: ID generado por MongoDB
+        title:
+          type: string
+          description: Nombre de producto
+        description:
+          type: string
+          description: Descripción de producto
+        price:
+          type: number
+          description: Precio de producto
+        code:
+          type: number
+          description: Código de producto
+        category:
+          type: string
+          description: Categoría de producto
+        stock:
+          type: number
+          description: Stock de producto
+        thumbnail:
+          type: string
+          description: Imagen de producto
+        owner:
+          type: string
+          description: Propietario de producto
+      example:
+        - _id: ObjectId ("gs4gsv425")
+          title: "Producto Ejemplo"
+          description: "Descripción del producto ejemplo"
+          price: 2999
+          code: 123456
+          category: "Categoría de ejemplo"
+          stock: 100
+          thumbnail: "www.imagen.com"
+          owner: "605a6844a2a96f2468a66e81"
+
+
+  # Definir Body, que debe entregar el cliente en la petición
+  requestBodies:
+    createUpdateProduct:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Nombre de producto
+        description:
+          type: string
+          description: Descripción de producto
+        price:
+          type: number
+          description: Precio de producto
+        code:
+          type: number
+          description: Código de producto
+        category:
+          type: string
+          description: Categoría de producto
+        stock:
+          type: number
+          description: Stock de producto
+        thumbnail:
+          type: string
+          description: Imagen de producto
+        owner:
+          type: string
+          description: Propietario de producto
+      example:
+          title: "Producto Ejemplo"
+          description: "Descripción del producto ejemplo"
+          price: 2999
+          code: 123456
+          category: "Categoría de ejemplo"
+          stock: 100
+          thumbnail: "www.imagen.com"
+          owner: "605a6844a2a96f2468a66e81"

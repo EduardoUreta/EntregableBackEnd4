@@ -23,7 +23,13 @@ import { usersRouter } from "./routes/users.routes.js";
 // Manejo de Errores + en las rutas
 import { errorHandler } from "./middleware/errorHandler.js"
 
+// Manejo de logs
 import { logger } from "./helpers/logger.js";
+
+// Importar Swagger
+import { swaggerSpecsProducts } from "./config/swagger.config.js"
+import { swaggerSpecsCarts } from "./config/swagger.config.js"
+import swaggerUI from "swagger-ui-express";
 
 const port = 8080;
 const app = express();
@@ -87,3 +93,7 @@ app.use("/api/sessions", sessionsRouter);
 app.use("/api/users/", usersRouter);
 app.use(errorHandler)
 
+// Definir ruta para que los usuarios accedan a la Documentación
+            //Habilitar la interfaz   // Interpretar las especificaciones
+app.use("/api/docs/products", swaggerUI.serve, swaggerUI.setup(swaggerSpecsProducts));
+app.use("/api/docs/carts", swaggerUI.serve, swaggerUI.setup(swaggerSpecsCarts));
