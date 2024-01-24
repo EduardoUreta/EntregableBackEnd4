@@ -2,11 +2,14 @@ import { Router } from "express";
 import passport from "passport";
 import { config } from "../config/config.js";
 import { SessionsController } from "../controller/sessions.controller.js";
+import { usersDao } from "../dao/index.js";
+import { uploadProfile } from "../utils.js";
 
 export const sessionsRouter = Router();
 
 // Rutas Registros
-sessionsRouter.post("/signup", passport.authenticate("signupLocalStrategy",{
+sessionsRouter.post("/signup", uploadProfile.single("avatar"), 
+    passport.authenticate("signupLocalStrategy",{
     failureRedirect:"/api/sessions/fail-signup"
 }) , SessionsController.redirectLogin);
 
@@ -32,12 +35,18 @@ sessionsRouter.get("/fail-login", SessionsController.failLogin);
 // Ruta Logout
 sessionsRouter.get("/logout", async(req,res)=>{
     try {
-        req.session.destroy(err=>{
+        const user = {...req.user};
+        req.session.destroy((err)=>{
             if(err) return res.render("profileView",{error:"No se pudo cerrar la sesion"});
+
+            // Modificar Last Conection
+            user.last_conection = new Date();
+            usersDao.updateUser(user._id, user);
+
             res.redirect("/");
-        })
+        });
     } catch (error) {
-        res.render("signupView",{error:"No se pudo registrar el usuario"});
+        res.render("signupView",{error:"No se pudo cerrar sesión"});
     }
 });
 

@@ -20,6 +20,8 @@ export const initializePassport = () => {
         },
         async (req, username, password, done) => {
             const {first_name, last_name, age} = req.body;
+            // Multer crea un req.file con datos de la imagen
+            // console.log(req.file)
             try {
                 // Buscar el email
                 const user = await usersDao.getUserByEmail(username); 
@@ -32,7 +34,8 @@ export const initializePassport = () => {
                         last_name,
                         age,
                         email: username, 
-                        password: createHash(password)
+                        password: createHash(password),
+                        avatar: req.file.filename
                     };
                     logger.informativo(newUser);
                     const userCreated = await usersDao.createUser(newUser)
@@ -52,15 +55,20 @@ export const initializePassport = () => {
         },
         async (username, password, done) => {
             try {
-                const user = await usersDao.getUserByEmail(username)
+                const user = await usersDao.getUserByEmail(username);
+
+                //Validamos que el usuario existe y la password es correct
                 if(!user){
                     // El usuario no está registrado
-                    return done(null, false)
+                    return done(null, false);
                 } 
                 if(!inValidPassword(password, user)){
                     return done(null, false);
                 }
-                //Validamos que el usuario existe y la password es correct
+        
+                // Modificar last_conection
+                user.last_conection = new Date();
+                await usersDao.updateUser(user._id, user);
                 return done(null, user);
             } catch (error) {
                 return done(error);
