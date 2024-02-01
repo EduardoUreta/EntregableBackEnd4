@@ -31,7 +31,7 @@ import { swaggerSpecsProducts } from "./config/swagger.config.js"
 import { swaggerSpecsCarts } from "./config/swagger.config.js"
 import swaggerUI from "swagger-ui-express";
 
-const port = 8080;
+const port = process.env.PORT || 8080;
 const app = express();
 
 // MiddleWre
