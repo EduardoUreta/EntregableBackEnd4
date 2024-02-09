@@ -1,8 +1,11 @@
 // Importar Capa de Servicio
 import { ProductsService } from "../service/products.service.js";
+import { UsersService } from "../service/users.service.js";
 import { EError } from "../enums/EError.js";
 import { CustomError } from "../service/errors/customError.service.js";
 import { productCreateError } from "../service/errors/productCreateError.service.js";
+
+import { productPremiumOwnerDelete } from "../helpers/email.js";
 
 export class ProductsController{
     // Obtener Productos
@@ -56,7 +59,15 @@ export class ProductsController{
             const product = await ProductsService.getProductById(productId);
             if((req.user.role === "premium" && product.owner.toString() === req.user._id.toString()) || req.user.role === "admin"){
                 await ProductsService.deleteProduct(productId);
-                res.json({status:"success",message:"producto eliminado"});
+
+                const userId = product.owner.toString();
+                const user = await UsersService.getUserById(userId);
+ 
+                if(user.role == "premium"){
+                    await productPremiumOwnerDelete(user._id, product._id);  
+                }
+                res.json({status:"success",message:"Producto Eliminado"});
+
             } else {
                 res.json({status:"error",message:"No tienes permisos para eliminar este producto"});
             }

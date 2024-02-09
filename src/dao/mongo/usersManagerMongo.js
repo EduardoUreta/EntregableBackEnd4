@@ -37,10 +37,6 @@ export class UsersManagerMongo{
         }
     };
 
-    async updateProduct(productId, newProductInfo){};
-
-    async deleteProduct(productId){};
-
     async updateUser(id, user){
         try {
             const result = await this.model.findByIdAndUpdate(id, user, {new:true});
@@ -49,5 +45,55 @@ export class UsersManagerMongo{
             logger.error("updateUser:", error.message);
             throw new Error("Se produjo un error al actualizar el usuario");
         }
-    }
-}
+    };
+
+    async getUsers(){
+        try {
+            const results = await this.model.find().lean();
+            const resultsMap = results.map(user => ({
+                first_name: user.first_name,
+                last_name: user.last_name,
+                email: user.email,
+                role: user.role
+            }));
+            return resultsMap;
+        } catch (error) {
+            logger.error("getUsers: ", error.message);
+            throw new Error("Se produjo un error al obtener los usuarios");
+        }
+    };
+
+    async deleteUser(userId){
+        try {
+            const result = await this.model.findByIdAndDelete(userId).lean();
+            return result;
+        } catch (error) {
+            logger.error("deleteUser: ", error.message);
+            throw new Error("Se produjo un error al eliminar el usuario");
+        }
+    };
+
+    async deleteUsers(){
+        try {
+            const twoDaysAgo = new Date();
+            twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+    
+            const result = await this.model.deleteMany({ "last_conection": { $lt: twoDaysAgo } });
+            logger.info("deleteUsers: ejecutado");
+            return result;
+        } catch (error) {
+            logger.error("deleteUsers: ", error.message);
+            throw new Error("Se produjo un error al eliminar a los usuarios");
+        }
+    };
+
+    async getUsersByAdmin(){
+        try {
+            const results = await this.model.find().lean();
+            return results;
+        } catch (error) {
+            logger.error("getUsersByAdmin: ", error.message);
+            throw new Error("Se produjo un error al obtener los usuarios");
+        }
+    };
+};

@@ -1,0 +1,16 @@
+año construccion
+
+valor arriendo normal
+
+valor arriendo temporañ10
+
+plusvalia
+
+
+marketplace mantenedor
+
+agregar alianzas con servicios, que el broker llegue, un click y le llegue un correo
+
+crear migración
+
+titulo, alianza descripcion, contacto (nombre, telefono, correo), tipo de servicio, si esta activo, y una URL

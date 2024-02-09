@@ -12,4 +12,20 @@ export class UsersService{
     static getUserById = (id)=>{
         return usersDao.getUserById(id);
     };
-}
+
+    static getUsers = () => {
+        return usersDao.getUsers();
+    };
+
+    static deleteUser = (id) => {
+        return usersDao.deleteUser(id);
+    };
+
+    static deleteUsers = () => {
+        return usersDao.deleteUsers();
+    };
+
+    static getUsersByAdmin = () => {
+        return usersDao.getUsersByAdmin();
+    };
+};

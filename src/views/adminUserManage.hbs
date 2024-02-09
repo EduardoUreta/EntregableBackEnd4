@@ -1,0 +1,17 @@
+<h1>Ver, modificar rol y eliminar un usuario</h1>
+<ul>
+    {{#each users}}
+    <li>
+        <p>Nombre: {{this.first_name}}</p>
+        <p>Apellido: {{this.last_name}}</p>
+        <p>Email: {{this.email}}</p>
+        <p>Edad: {{this.age}}</p>
+        <p>Rol: {{this.role}} <button class="btn btn-primary" onclick="modifyRoleByAdmin('{{this._id}}','{{this.role}}')">Modificar Rol</button></p>
+        <p class="alert alert-danger m-0 col-sm-4">Para cambiar el rol de usuario, debes cargar documentos</p>
+        <p>Última conexión: {{this.last_conection}}</p>
+        <p><button class="btn btn-danger" onclick="deleteUser('{{this._id}}')">Eliminar Usuario</button></p>
+    </li>
+    {{/each}}
+</ul>
+
+<script src="/js/modifyRole.js"></script>

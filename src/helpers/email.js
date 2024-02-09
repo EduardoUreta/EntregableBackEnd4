@@ -31,8 +31,7 @@ export const sendChangePassEmail = async (req, userEmail, token) => {
                 </a>
             </div>
         `
-    })
-
+    });
 };
 
 // Verificar si el Token sigue vigente o es real
@@ -45,4 +44,36 @@ export const verifyEmailToken =  (token) => {
         logger.info(error.message)
         return null;
     };
+};
+
+// Enviar correo si producto de owner premium fue eliminado
+export const productPremiumOwnerDelete = async (req, userId, productId, res) => {
+    try {
+        const userResponse = await fetch(`http://localhost:8080/api/users/${userId}`);
+        const productResponse = await fetch(`http://localhost:8080/api/products/${productId}`);
+        
+        if (!userResponse.ok || !productResponse.ok) {
+            throw new Error('Error al obtener información del usuario o del producto');
+        }
+
+        const userData = await userResponse.json();
+        const productData = await productResponse.json();
+
+        await transporter.sendMail({
+            from: "Almacén",
+            to: userData.email, // Utiliza el email del usuario obtenido
+            subject: "Producto de tu propiedad eliminado",
+            html: `
+                <div>
+                    <h2>Hola!</h2>
+                    <p>Hemos eliminado tu producto ${productData.title}</p>
+                </div>
+            `
+        });
+
+        console.log("Correo enviado");
+    } catch (error) {
+        console.error("Error al enviar correo:", error);
+        throw error;
+    }
 };

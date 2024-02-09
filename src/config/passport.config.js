@@ -35,8 +35,8 @@ export const initializePassport = () => {
                         age,
                         email: username, 
                         password: createHash(password),
-                        avatar: req.file.filename
-                    };
+                        avatar: req.file ? req.file.filename : ''
+                    }; 
                     logger.informativo(newUser);
                     const userCreated = await usersDao.createUser(newUser)
                             // El done (hubo errores?, nuevo user)
